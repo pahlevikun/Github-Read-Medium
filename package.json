@@ -1,0 +1,16 @@
+{
+  "name": "github-read-medium-card",
+  "version": "1.0.0",
+  "description": "show medium on github readme",
+  "main": "app.js",
+  "scripts": {
+    "start": "node ./app.js",
+    "dev": "nodemon ./app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "express": "^4.17.1",
+    "sharp": "^0.26.2"
+  }
+}
