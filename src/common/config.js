@@ -328,7 +328,7 @@ global.config = {
       date_color: "#FFFF00",
       bg_color: "#002046",
       border_color: "#E4E2E2",
-    },
+    }, 
     blueberry: {
       title_color: "#82AAFF",
       author_color: "#27E8A7",

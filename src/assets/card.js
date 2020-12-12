@@ -1,11 +1,12 @@
-require("./config");
-const { imgToDataURL, dateFormat } = require("./utils");
+require("../common/config");
+const { parseImgToDataURL: imgToDataURL, dateFormat, measureReadingTime } = require("../common/utils");
 
 const mediumCard = async (data, settings, index) => {
   const result = await imgToDataURL(data.thumbnail);
   const blogImage = "data:image/png;base64," + result.toString("base64");
   const blogDate = await dateFormat(data.pubDate);
   const blogLink = data.link;
+  const readingTime = measureReadingTime(data.content);
 
   var selected_theme = config.themes.default;
 
@@ -18,7 +19,7 @@ const mediumCard = async (data, settings, index) => {
   var height = settings.height;
   var bg_color = settings.bg_color || config.themes[selected_theme].bg_color;
 
-  var image_mask = {
+  const image_mask = {
     background: settings.image_background || config.card.image_mask.background,
     height: settings.image_height || config.card.image_mask.height,
     width: settings.image_width || config.card.image_mask.width,
@@ -26,36 +27,34 @@ const mediumCard = async (data, settings, index) => {
     y: settings.image_y || config.card.image_mask.y,
   };
 
-  var image = {
+  const image = {
     height: settings.image_height || config.card.image.height,
     width: settings.image_width || config.card.image.width,
     x: settings.image_x || config.card.image.x,
     y: settings.image_y || config.card.image.y,
   };
 
-  var title = {
+  const title = {
     color: settings.title_color || config.themes[selected_theme].title_color,
     x: settings.title_x || config.card.title.x,
     y: settings.title_y || config.card.title.y,
   };
 
-  var subTitle = {
+  const subTitle = {
     color: settings.author_color || config.themes[selected_theme].author_color,
     x: settings.title_x || config.card.sub_title.x,
     y: settings.title_y || config.card.sub_title.y,
     font_size: settings.author_font_size || config.card.sub_title.font_size,
   };
 
-  var author = {
+  const author = {
     color: settings.author_color || config.themes[selected_theme].author_color,
     x: settings.author_x || config.card.author.x,
     y: settings.author_y || config.card.author.y,
     font_size: settings.author_font_size || config.card.author.font_size,
   };
 
-  console.log(author.y);
-
-  var date = {
+  const date = {
     color: settings.date_color || config.themes[selected_theme].date_color,
     x: settings.date_x || config.card.date.x,
     y: settings.date_y || config.card.date.y,
@@ -65,8 +64,10 @@ const mediumCard = async (data, settings, index) => {
   bg_color = config.themes[selected_theme].bg_color;
   border_color = config.themes[selected_theme].border_color;
 
-  var max_characters = 30;
-  var character_tracker = 0;
+  let max_characters = 30;
+  let character_tracker = 0;
+  let line_tracker = 0;
+  let max_lines = 2;
   var array_holder = [];
   var title_string = "";
   var sub_title_string =data.description
@@ -74,8 +75,6 @@ const mediumCard = async (data, settings, index) => {
   .substring(0, 35) + '...';
   var word_array = data.title.split(" ");
   var total_words = word_array.length;
-  var line_tracker = 0;
-  var max_lines = 2;
 
   try {
     word_array.forEach((word, index) => {
@@ -154,7 +153,7 @@ const mediumCard = async (data, settings, index) => {
       <textPath xlink:href="#blogAuthor">${data.author}</textPath>
     </text>
     <text transform="translate(${date.x},${date.y})" fill="${date.color}" font-size="${date.font_size}" font-family="'Segoe UI', Ubuntu, Sans-Serif">
-      <textPath xlink:href="#blogDate">${blogDate}</textPath>
+      <textPath xlink:href="#blogDate">${blogDate} • ${readingTime}</textPath>
     </text>
 
     <rect clip-path="url(#clip)" x="${image_mask.x}" y="${image_mask.y}" height="${image_mask.height}px" width="${image_mask.width}px" style="fill:url(#img${index});"></rect>

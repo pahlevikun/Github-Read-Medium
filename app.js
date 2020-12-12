@@ -1,7 +1,7 @@
-require("./src/config");
-const { asyncForEach } = require("./src/utils");
-const mediumCard = require("./src/card");
-const { getUserData } = require("./api/api");
+require("./src/common/config");
+const { asyncForEach } = require("./src/common/utils");
+const mediumCard = require("./src/assets/card");
+const { getUserData } = require("./src/api/medium");
 var express = require("express");
 var app = express();
 app.use(express.json());
@@ -57,16 +57,15 @@ app.get("/latest", async (request, response) => {
       config.default.margin_top * 2 +
       config.card.spacing * Math.floor(limit / 2)
     }">`;
-    resultData = resultData.slice(offset, offset + limit);
     await asyncForEach(
-      resultData,
+      resultData.slice(offset, offset + limit),
       request.query,
       async (blog, index, settings) => {
         if (index >= limit) {
           return;
         }
         const mediumCardObj = await mediumCard(blog, settings, index);
-        result += `<g requiredFeatures="http://www.w3.org/Graphics/SVG/feature/1.2/#TextFlow" transform="translate(${
+        result += `<g transform="translate(${
           (index % 2 ? width + config.card.spacing : 0) +
           config.default.margin_left
         }, ${

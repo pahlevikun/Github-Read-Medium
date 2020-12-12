@@ -2,7 +2,7 @@ const axios = require("axios");
 const mediumURL =
   "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@";
 
-const getUserData = async (username) => {
+const getArticlesByUsername = async (username) => {
   try {
     const result = await axios.get(mediumURL + username);
     const filteredResult = result.data.items.filter(
@@ -18,4 +18,4 @@ const getUserData = async (username) => {
   }
 };
 
-module.exports = { getUserData };
+module.exports = { getUserData: getArticlesByUsername };

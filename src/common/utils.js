@@ -1,34 +1,37 @@
 const axios = require("axios");
 const sharp = require("sharp");
 
-//TODO: It is not correct for some publications such as. TDS
-// const ansiWordBound = (c) =>
-//   " " === c || "\n" === c || "\r" === c || "\t" === c;
+const ansiWordBound = (c) => (
+  (' ' === c) ||
+  ('\n' === c) ||
+  ('\r' === c) ||
+  ('\t' === c)
+);
 
-// const readingTimeCalc = (text) => {
-//   let words = 0;
-//   let start = 0;
-//   let end = text.length - 1;
-//   let i;
+const measureReadingTime = (text) => {
+  let words = 0;
+  let start = 0;
+  let end = text.length - 1;
+  let i;
 
-//   const wordsPerMinute = 200;
+  const wordsPerMinute = 200;
 
-//   while (ansiWordBound(text[start])) start++;
-//   while (ansiWordBound(text[end])) end--;
+  while (ansiWordBound(text[start])) start++;
+  while (ansiWordBound(text[end])) end--;
 
-//   for (i = start; i <= end; ) {
-//     for (; i <= end && !ansiWordBound(text[i]); i++);
-//     words++;
-//     for (; i <= end && ansiWordBound(text[i]); i++);
-//   }
+  for (i = start; i <= end; ) {
+    for (; i <= end && !ansiWordBound(text[i]); i++);
+    words++;
+    for (; i <= end && ansiWordBound(text[i]); i++);
+  }
 
-//   const minutes = words / wordsPerMinute;
-//   const displayed = Math.ceil(minutes.toFixed(2));
+  const minutes = words / wordsPerMinute;
+  const displayed = Math.ceil(minutes.toFixed(2));
 
-//   return `${displayed} min read`;
-// };
+  return `${displayed} min read`;
+};
 
-const imgToDataURL = async (url) => {
+const parseImgToDataURL = async (url) => {
   return await axios
     .get(url, {
       responseType: "arraybuffer",
@@ -72,4 +75,4 @@ const asyncForEach = async (array, settings, callback) => {
   }
 };
 
-module.exports = { imgToDataURL, asyncForEach, dateFormat };
+module.exports = { parseImgToDataURL: parseImgToDataURL, asyncForEach, dateFormat, measureReadingTime };
