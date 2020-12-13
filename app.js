@@ -19,22 +19,18 @@ app.get("/latest", async (request, response) => {
     }
 
     const username = request.query.username;
-    console.log(request.query);
     const offset = request.query.offset || 0;
     const width = request.query.width || config.card.width;
     const height = request.query.height || config.card.height;
-    const limit = request.query.limit == null ? 1 :
-      request.query.limit <= 10
-        ? request.query.limit
-        : false || config.default.limit;
 
     request.query.width = width;
     request.query.height = height;
 
     var resultData = await getUserData(username);
+    const limit = request.query.limit == null ? config.default.limit 
+      : request.query.limit > resultData.length ? resultData.length
+        : request.query.limit;
     let result = `<svg>`;
-
-    if (resultData.length < limit) limit = resultData.length;
 
     result = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
               width="${

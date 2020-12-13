@@ -1,6 +1,6 @@
 global.config = {
   default: {
-    limit: 10,
+    limit: 1,
     margin_left: 10,
     margin_top: 10,
     cache_seconds: {
