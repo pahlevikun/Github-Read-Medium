@@ -37,7 +37,7 @@ Html:
 | parameter | default | required | description                        |
 |-----------|---------|----------|------------------------------------|
 | username  | ""      | YES      | Your medium username               |
-| limit     | 1       | NO       | Limit of articles you want to show, maximum is 10 |
+| limit     | 1       | NO       | Limit of articles you want to show |
 | theme     | default   | NO       | Card style, please go to this [link](https://github.com/anuraghazra/github-readme-stats/blob/master/themes/README.md) for all theme                       |
 
 ### Deploy your own
