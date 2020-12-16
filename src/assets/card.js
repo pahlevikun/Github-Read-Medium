@@ -163,4 +163,4 @@ const mediumCard = async (data, settings, index) => {
     `;
 };
 
-module.exports = mediumCard;
+module.exports.mediumCard = mediumCard;
